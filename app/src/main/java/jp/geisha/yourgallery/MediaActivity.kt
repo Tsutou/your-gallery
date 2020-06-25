@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.activity_medias.*
 
-class MediasActivity : AppCompatActivity() {
+class MediaActivity : AppCompatActivity() {
 
     companion object {
         fun createIntent(context: Context): Intent {
-            return Intent(context, MediasActivity::class.java)
+            return Intent(context, MediaActivity::class.java)
         }
     }
 
@@ -21,12 +21,17 @@ class MediasActivity : AppCompatActivity() {
         ViewModelProvider(this).get(MediasViewModel::class.java)
     }
 
+    private val adapter = MediaAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medias)
 
-        viewModel.photosData.observe(this, Observer {
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        recyclerView.adapter = adapter
 
+        viewModel.photosData.observe(this, Observer {
+            adapter.submitList(it)
         })
 
         viewModel.getPhotos()

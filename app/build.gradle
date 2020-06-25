@@ -71,9 +71,13 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.commit451:PhotoView:1.2.4'
 
+    // glide
+    def glide_version = "4.11.0"
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
     // permissionDispatcher
     def permissionDispatcherVersion = '3.2.0'
     implementation("com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion")
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
     kapt "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
 }

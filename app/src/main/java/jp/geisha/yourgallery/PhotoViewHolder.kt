@@ -13,10 +13,10 @@ class PhotoViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         .inflate(list_item_photo, parent, false)
 ) {
     fun bind(photo: Photo) {
-        itemView.image.load(photo.uri){
+        itemView.image.load(photo.detail.uri){
             crossfade(true)
             placeholder(R.drawable.ic_launcher_foreground)
-            memoryCachePolicy(CachePolicy.READ_ONLY)
+            memoryCachePolicy(CachePolicy.ENABLED)
         }
     }
 }

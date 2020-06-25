@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_medias.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class MediaActivity : AppCompatActivity() {
 
@@ -30,10 +34,10 @@ class MediaActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = adapter
 
-        viewModel.photosData.observe(this, Observer {
-            adapter.submitList(it)
-        })
-
-        viewModel.getPhotos()
+        lifecycleScope.launch {
+            viewModel.photosDataFlow.collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 }

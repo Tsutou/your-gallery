@@ -52,6 +52,11 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    def paging_version = "3.0.0-alpha02"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // mk: imagelabeler
+    implementation 'com.google.mlkit:image-labeling:16.0.0'
 
     // Coil
     implementation 'io.coil-kt:coil:0.11.0'

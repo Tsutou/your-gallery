@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import permissions.dispatcher.*
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 @RuntimePermissions
 class HomeActivity : AppCompatActivity() {
@@ -15,6 +17,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medias)
+        Timber.plant(DebugTree())
         startMediaActivityWithPermissionCheck()
     }
 

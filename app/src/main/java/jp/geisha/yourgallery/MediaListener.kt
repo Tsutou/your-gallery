@@ -1,9 +1,8 @@
 package jp.geisha.yourgallery
 
 object MediaListener {
-
     interface OnMediaSelectedListener {
-        fun onSelected(data: Photo, position: Int)
-        fun onLongClick(data: Photo, position: Int)
+        fun onClick(data: Media, position: Int)
+        fun onLongClick(data: Media, position: Int)
     }
 }

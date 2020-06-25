@@ -6,4 +6,4 @@ data class Photo(
     val fileName: String,
     val dateAdded: Long,
     val uri: Uri
-)
+) : Media

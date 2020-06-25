@@ -22,7 +22,7 @@ class MediasViewModel(application: Application) : AndroidViewModel(application) 
             PHOTO_DATE_ADDED,
             PHOTO_FILE_NAME
         )
-        private const val PHOTO_SORT_ORDER = "PHOTO_DATE_ADDED DESC, $PHOTO_ID ASC"
+        private const val PHOTO_SORT_ORDER = "$PHOTO_DATE_ADDED DESC, $PHOTO_ID ASC"
     }
 
     val photosData :MutableLiveData<List<Photo>> = MutableLiveData()
@@ -35,7 +35,7 @@ class MediasViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private suspend fun fetch(): List<Photo> = withContext(Dispatchers.IO) {
-        val photosList = arrayListOf<Photo>()
+        val photosList = mutableListOf<Photo>()
         getApplication<Application>().contentResolver.query(
             PHOTO_URI,
             PHOTO_PROJECTION,

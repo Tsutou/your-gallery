@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import jp.geisha.yourgallery.gallery.GalleryActivity
 import permissions.dispatcher.*
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -23,7 +24,7 @@ class HomeActivity : AppCompatActivity() {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun startMediaActivity() {
-        startActivity(MediaActivity.createIntent(this))
+        startActivity(GalleryActivity.createIntent(this))
         finish()
     }
 

@@ -1,14 +1,15 @@
-package jp.geisha.yourgallery
+package jp.geisha.yourgallery.data
 
-import android.app.Application
 import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
 import androidx.paging.PagingSource
+import jp.geisha.yourgallery.entity.Media
+import jp.geisha.yourgallery.entity.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MediaPagingSource(private val context: Context) : PagingSource<Long, Media>() {
+class GalleryPagingSource(private val context: Context) : PagingSource<Long, Media>() {
 
     companion object {
         private val PHOTO_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -60,7 +61,11 @@ class MediaPagingSource(private val context: Context) : PagingSource<Long, Media
                 val fileName = cursor.getString(fileNameIndex) ?: continue
                 val uri = ContentUris.withAppendedId(PHOTO_URI, id)
                 photosList.add(
-                    Photo.newInstance(fileName, dateAdded, uri)
+                    Photo.newInstance(
+                        fileName,
+                        dateAdded,
+                        uri
+                    )
                 )
             }
             cursor.close()

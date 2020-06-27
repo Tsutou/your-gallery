@@ -1,4 +1,4 @@
-package jp.geisha.yourgallery
+package jp.geisha.yourgallery.gallery
 
 import android.app.Application
 import android.content.ContentUris
@@ -8,12 +8,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import jp.geisha.yourgallery.label.OnDeviceImageLabeler
+import jp.geisha.yourgallery.data.GalleryPagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 
-class MediasViewModel(application: Application) : AndroidViewModel(application) {
+class GalleryViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
         const val PAGE_SIZE = 20
@@ -30,11 +31,11 @@ class MediasViewModel(application: Application) : AndroidViewModel(application) 
         getLabels()
     }
 
-    val photosDataFlow = Pager(
+    val galleryDataFlow = Pager(
         PagingConfig(pageSize = PAGE_SIZE, initialLoadSize = PAGE_SIZE)
     ) {
-        MediaPagingSource(getApplication())
-    }.flow
+        GalleryPagingSource(getApplication())
+    }.flow.cachedIn(viewModelScope)
 
     private fun getLabels() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -51,7 +52,11 @@ class MediasViewModel(application: Application) : AndroidViewModel(application) 
                 while (cursor.moveToNext()) {
                     val id = cursor.getLong(idIndex)
                     val uri = ContentUris.withAppendedId(PHOTO_URI, id)
-                    val labels = OnDeviceImageLabeler.detectLabel(getApplication(), uri)
+                    val labels =
+                        OnDeviceImageLabeler.detectLabel(
+                            getApplication(),
+                            uri
+                        )
                     uriLabelMap.put(uri, labels)
                     labelsList.addAll(labels)
                 }

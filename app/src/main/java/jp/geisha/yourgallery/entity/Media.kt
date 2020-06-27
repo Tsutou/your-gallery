@@ -1,4 +1,4 @@
-package jp.geisha.yourgallery
+package jp.geisha.yourgallery.entity
 
 import android.net.Uri
 

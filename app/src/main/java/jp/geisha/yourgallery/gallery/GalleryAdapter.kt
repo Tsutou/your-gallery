@@ -1,12 +1,14 @@
-package jp.geisha.yourgallery
+package jp.geisha.yourgallery.gallery
 
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import jp.geisha.yourgallery.entity.Media
+import jp.geisha.yourgallery.entity.Photo
 import java.lang.IllegalStateException
 
-class MediaAdapter : PagingDataAdapter<Media,RecyclerView.ViewHolder>(diffCallback){
+class GalleryAdapter : PagingDataAdapter<Media,RecyclerView.ViewHolder>(diffCallback){
 
     enum class Type {
         PHOTO
@@ -25,7 +27,9 @@ class MediaAdapter : PagingDataAdapter<Media,RecyclerView.ViewHolder>(diffCallba
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
-            Type.PHOTO.ordinal -> PhotoViewHolder(parent)
+            Type.PHOTO.ordinal -> PhotoViewHolder(
+                parent
+            )
             else -> throw IllegalStateException("It's a Unknown viewHolder.")
         }
     }

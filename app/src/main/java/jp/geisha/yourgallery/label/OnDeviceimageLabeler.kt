@@ -1,4 +1,4 @@
-package jp.geisha.yourgallery
+package jp.geisha.yourgallery.label
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -22,7 +22,11 @@ class OnDeviceImageLabeler {
 
         @WorkerThread
         suspend fun detectLabel(context: Context, uri: Uri): List<String> = withContext(Dispatchers.IO) {
-            val targetBitmap = getTargetBitmapWithGlide(context, uri) ?: return@withContext listOf(OTHERS)
+            val targetBitmap = getTargetBitmapWithGlide(
+                context,
+                uri
+            )
+                ?: return@withContext listOf(OTHERS)
             val image = InputImage.fromBitmap(targetBitmap, 0)
             val labeler = ImageLabeling.getClient(options)
 

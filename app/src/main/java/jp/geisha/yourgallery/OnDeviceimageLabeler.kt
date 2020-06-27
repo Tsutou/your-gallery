@@ -21,8 +21,8 @@ class OnDeviceImageLabeler {
         private val options = ImageLabelerOptions.Builder().setConfidenceThreshold(0.6f).build()
 
         @WorkerThread
-        suspend fun detectLabel(context: Context, uri: Uri): String = withContext(Dispatchers.IO) {
-            val targetBitmap = getTargetBitmapWithGlide(context, uri) ?: return@withContext OTHERS
+        suspend fun detectLabel(context: Context, uri: Uri): List<String> = withContext(Dispatchers.IO) {
+            val targetBitmap = getTargetBitmapWithGlide(context, uri) ?: return@withContext listOf(OTHERS)
             val image = InputImage.fromBitmap(targetBitmap, 0)
             val labeler = ImageLabeling.getClient(options)
 
@@ -30,14 +30,14 @@ class OnDeviceImageLabeler {
                 val labels = synchronized(this) {
                     Tasks.await(labeler.process(image))
                 }
-                if (labels.size == 0) return@withContext OTHERS
-                labels[0].text
+                if (labels.size == 0) return@withContext listOf(OTHERS)
+                labels.map { it.text }
             } catch (e: ExecutionException) {
                 Timber.e("$TAG:$e")
-                OTHERS
+                listOf(OTHERS)
             } catch (e: InterruptedException) {
                 Timber.e("$TAG:$e")
-                OTHERS
+                listOf(OTHERS)
             } finally {
                 labeler.close()
             }

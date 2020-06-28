@@ -16,17 +16,16 @@ import java.util.concurrent.ExecutionException
 
 class OnDeviceImageLabeler {
     companion object {
-        private const val OTHERS = "others"
+        private const val OTHERS = "Others"
         private val TAG = OnDeviceImageLabeler::class.java.simpleName
-        private val options = ImageLabelerOptions.Builder().setConfidenceThreshold(0.6f).build()
+        private val options = ImageLabelerOptions.Builder().setConfidenceThreshold(0.8f).build()
 
         @WorkerThread
         suspend fun detectLabel(context: Context, uri: Uri): List<String> = withContext(Dispatchers.IO) {
             val targetBitmap = getTargetBitmapWithGlide(
                 context,
                 uri
-            )
-                ?: return@withContext listOf(OTHERS)
+            ) ?: return@withContext listOf(OTHERS)
             val image = InputImage.fromBitmap(targetBitmap, 0)
             val labeler = ImageLabeling.getClient(options)
 

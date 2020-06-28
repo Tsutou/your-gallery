@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_medias)
+        setContentView(R.layout.activity_gallery)
         Timber.plant(DebugTree())
         startMediaActivityWithPermissionCheck()
     }

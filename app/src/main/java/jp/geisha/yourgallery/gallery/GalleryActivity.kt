@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_gallery.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class GalleryActivity : AppCompatActivity() {
 
@@ -60,7 +59,7 @@ class GalleryActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.labelScanState.observe(this@GalleryActivity, Observer {
+            viewModel.labelLoadState.observe(this@GalleryActivity, Observer {
                 it ?: return@Observer
                 when (it) {
                     is GalleryViewModel.State.Loading -> {

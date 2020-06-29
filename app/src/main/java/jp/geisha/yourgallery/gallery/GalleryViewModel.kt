@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class GalleryViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -37,7 +36,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     val labelsData = MutableLiveData<Map<String, Uri?>>()
-    val labelScanState = MutableLiveData<State>()
+    val labelLoadState = MutableLiveData<State>()
 
     init {
         getLabels()
@@ -49,30 +48,28 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
         GalleryPagingSource(getApplication())
     }.flow.cachedIn(viewModelScope)
 
-    private fun getLabels() {
-        labelScanState.postValue(State.Loading(0f))
-        viewModelScope.launch(Dispatchers.Default) {
-            val labelsByUri = fetchLabelsByUri()
-            val labelItems = labelsByUri
-                .values
-                .flatten()
-                .groupingBy { it }
-                .eachCount()
-                .entries
-                .sortedByDescending { it.value }
-                .map { it.key }
-                .associateWith { label ->
-                    labelsByUri
-                        .toList()
-                        .find {
-                            it.second.contains(label)
-                        }
-                        ?.first
-                }
-            labelsData.postValue(labelItems)
-            delay(1000)
-            labelScanState.postValue(State.Success)
-        }
+    private fun getLabels() = viewModelScope.launch(Dispatchers.Default) {
+        labelLoadState.postValue(State.Loading(0f))
+        val labelsByUri = fetchLabelsByUri()
+        val labelItems = labelsByUri
+            .values
+            .flatten()
+            .groupingBy { it }
+            .eachCount()
+            .entries
+            .sortedByDescending { it.value }
+            .map { it.key }
+            .associateWith { label ->
+                labelsByUri
+                    .toList()
+                    .find {
+                        it.second.contains(label)
+                    }
+                    ?.first
+            }
+        labelsData.postValue(labelItems)
+        delay(1000)
+        labelLoadState.postValue(State.Success)
     }
 
     private suspend fun fetchLabelsByUri() = withContext(Dispatchers.IO) {
@@ -97,7 +94,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                 labelsByUri[uri] = labels
                 count++
                 val progressPercent = (count.toFloat() / cursor.count.toFloat()) * 100
-                labelScanState.postValue(State.Loading(progressPercent))
+                labelLoadState.postValue(State.Loading(progressPercent))
             }
             cursor.close()
         }

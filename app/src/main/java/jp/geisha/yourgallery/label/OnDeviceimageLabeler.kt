@@ -18,7 +18,7 @@ class OnDeviceImageLabeler {
     companion object {
         private const val OTHERS = "Others"
         private val TAG = OnDeviceImageLabeler::class.java.simpleName
-        private val options = ImageLabelerOptions.Builder().setConfidenceThreshold(0.8f).build()
+        private val options = ImageLabelerOptions.Builder().setConfidenceThreshold(0.6f).build()
 
         @WorkerThread
         suspend fun detectLabel(context: Context, uri: Uri): List<String> = withContext(Dispatchers.IO) {
